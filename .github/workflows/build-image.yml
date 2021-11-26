@@ -20,7 +20,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: slackapi/slack-github-action@v1.15.0
       with:
-        channel-id: q-xyz-cicd
+        channel-id: infrastructure-notifications
         slack-message: ":pepegalight: STARTED barnbridge-smartyieldbonds image build"
         
     - name: Set version
@@ -63,8 +63,8 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: slackapi/slack-github-action@v1.15.0
       with:
-        channel-id: q-xyz-cicd
-        slack-message: ":white_check_mark: ${{ env.IMAGE_TAG }}"
+        channel-id: infrastructure-notifications
+        slack-message: ":white_check_mark: ${{ env.IMAGE_TAG }} barnbridge-smartyield image published to ECR"
 
     - name: Notify Slack failure
       if: failure()
@@ -72,7 +72,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       uses: slackapi/slack-github-action@v1.15.0
       with:
-        channel-id: q-xyz-cicd
+        channel-id: infrastructure-notifications
         slack-message: ":octagonal_sign: FAILED"
 
     - name: Logout from Amazon ECR
