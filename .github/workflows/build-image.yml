@@ -21,7 +21,7 @@ jobs:
       uses: slackapi/slack-github-action@v1.15.0
       with:
         channel-id: infrastructure-notifications
-        slack-message: ":pepegalight: STARTED barnbridge-smartyieldbonds image build"
+        slack-message: ":building_construction: STARTED barnbridge-smartyieldbonds image build"
         
     - name: Set version
       id: vars
