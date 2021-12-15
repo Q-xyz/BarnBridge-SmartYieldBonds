@@ -3,7 +3,7 @@ name: Build Docker image
 on:
   push:
     branches:
-      - master
+      - disabled
 
 jobs:
   build:
@@ -18,11 +18,12 @@ jobs:
       id: slack
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: slackapi/slack-github-action@v1.15.0
+      uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel-id: infrastructure-notifications
-        slack-message: ":building_construction: STARTED barnbridge-smartyieldbonds image build"
-        
+        channel: infra-ci-barnbridge
+        status: STARTED
+        color: warning
+
     - name: Set version
       id: vars
       run: echo "::set-output name=version::$(echo ${GITHUB_SHA} | cut -c1-7)"
@@ -61,19 +62,23 @@ jobs:
       if: success()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: slackapi/slack-github-action@v1.15.0
+      uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel-id: infrastructure-notifications
-        slack-message: ":white_check_mark: ${{ env.IMAGE_TAG }} barnbridge-smartyield image published to ECR"
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel: infra-ci-barnbridge
+        status: SUCCESS
+        color: good
 
     - name: Notify Slack failure
       if: failure()
       env:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-      uses: slackapi/slack-github-action@v1.15.0
+      uses: voxmedia/github-action-slack-notify-build@v1
       with:
-        channel-id: infrastructure-notifications
-        slack-message: ":octagonal_sign: FAILED"
+        message_id: ${{ steps.slack.outputs.message_id }}
+        channel: infra-ci-barnbridge
+        status: FAILED
+        color: danger
 
     - name: Logout from Amazon ECR
       if: always()
