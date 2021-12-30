@@ -154,4 +154,3 @@ For security concerns, please email info@barnbridge.com.
 
 Copyright 2021 BarnBridge DAO
 
-
